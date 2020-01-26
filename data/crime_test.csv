@@ -1,6 +1,6 @@
 id,original_text,clean_text,sentiment,polarity,hashtags,class_value
 1.22E+18,RT @Womens_Aid: Who will stand up against domestic abuse during the #ge2020?  Launching the Womenâs Aid manifesto this lunchtime #womensaid,Who stand domestic abuse Launching Women â s Aid manifesto lunchtime ,"Sentiment(polarity=0.0, subjectivity=0.1)",0,"ge2020, womensaid",3
-1.22E+18,Three teens arrested after armed #robbery - Jan 21 @ 6:58 AM ET https://t.co/xlBJVD1Mq6,teens arrestreeted armed jan,"Sentiment(polarity=0.0, subjectivity=0.0)",0,robbery,2
+1.22E+18,Three teens arrested after armed #robbery - Jan 21 @ 6:58 AM ET https://t.co/xlBJVD1Mq6,teens arrestreeted armed jan robbery,"Sentiment(polarity=0.0, subjectivity=0.0)",0,robbery,2
 1.22E+18,BLUE THUNDER the strt of it ll #rape #murder #romnce #kindle #smsg #Ibooks #in1 https://t.co/DOCSEK6zcN https://t.co/ulWEQVl52q,BLUE THUNDER start,"Sentiment(polarity=0.0, subjectivity=0.1)",0,"rape, murder, romance, kindle, asmsg, Ibooks, ian1",1
 1.22E+18,"RT @buddy_invest: #FakeiPhone #Giveaways #Scammer 
 
@@ -6792,28 +6792,10 @@ California Resident Convicted Of Multiple Charges In One Of Wyoming's Largest Dr
 1.22E+18,RT @colingarrow: The Terry Bell Mysteries #murder #mystery â˜As with all the best writers you can tell straight away youâre in safe handsâ,terry bell mystreeteries bestreet writers streetraight safe hands,"Sentiment(polarity=0.5, subjectivity=0.5)",0.5,"murder, mystery",4
 1.22E+18,"RT @ToulasTake: The incredible @JulieSLalonde gave us her time for this important story on #femicide, #domesticabuse &amp; #stalking. Iâve had",The incredible gave time important story amp I â ve had,"Sentiment(polarity=0.65, subjectivity=0.95)",0.65,"femicide, domesticabuse, stalking",3
 1.22E+18,Tackling #fraud in the #finance industry. STC Member @LifeAtLonghurst shares their advice and how you can #TakeFive https://t.co/T0Gqe6wpio,Tackling industry STC Member shares advice ,"Sentiment(polarity=0.0, subjectivity=0.0)",0,"fraud, finance, TakeFive",5
-1.22E+18,"RT @sifchandigarh: As per NCRB 2018 ::
-
-Cases reported in India ðŸ®ðŸ³ 
-In IPC #498A 
-Cases - 1,03,272 
-Conviction rate - 13 %..
-
-In IPC 376 #Râ",ncrb cases reported india ipc cases conviction rate ipc,"Sentiment(polarity=0.0, subjectivity=0.0)",0,498A,1
 1.22E+18,"RT @AlphaPatriotUS: ¢So, #DonLemon allegedly #assault ed &amp; stuck his hand down the #pants of another man and forcibly rubbed the same finge",¢So allegedly ed amp stuck hand man forcibly rubbed finge,"Sentiment(polarity=0.2, subjectivity=0.55)",0.2,"DonLemon, assault, pants",3
-1.22E+18,"RT @AnonCassi: @POTUS #Justice Miami, FL
-Businessman Pleads To FCPA &amp; $-Laundering Violations In $4.4M Bribe Scheme Involving PetroEcuador",Miami FL Businessman Pleads To FCPA amp -Laundering Violations In 4.4M Bribe Scheme Involving PetroEcuador,"Sentiment(polarity=0.0, subjectivity=0.0)",0,Justice,5
 1.22E+18,Public asked to help identify #theft #suspect - Jan 17 @ 2:10 AM ET https://t.co/l3vnhPZQVd,Public asked identify Jan 17 2:10 AM ET,"Sentiment(polarity=0.0, subjectivity=0.06666666666666667)",0,"theft, suspect",2
-1.22E+18,"@BernieSanders Wrong ! Itâs #murder 
-Stop trying to make such sin sound appropriate.... just for votes . https://t.co/OK02uz0da3",wrong s streetop make sin sound justreet votes,"Sentiment(polarity=-0.04999999999999999, subjectivity=0.65)",-0.05,murder,4
 1.22E+18,"Woman #killed, man critically wounded in #Long #Beach #shooting, #suspect in custody - Jan 23 @ 4:08 AM ET https://t.co/4cSCX0FLie",Woman man critically wounded custody Jan 23 4:08 AM ET,"Sentiment(polarity=0.0, subjectivity=0.8)",0,"killed, Long, Beach, shooting, suspect",4
 1.22E+18,@RubbFtim_786 The future of ur youth #rape #suicide #honorkilling future destroyed #Pkistn nothing will chngeâ https://t.co/gxc33QGldY,future ur youth future destreetroyed change,"Sentiment(polarity=0.0, subjectivity=0.125)",0,"rape, suicide, honorkilling, Pakistan",1
-1.22E+18,"RT @KarenAnnHpkins: Get the Kindle versin f PAPER RSES fr FREE tday! ðŸ“šðŸŽ‰
-https://t.c/7j5UYZECu4
-#free #freebk #FREEBKS #murdermys",Get Kindle version PAPER ROSES FREE today ,"Sentiment(polarity=0.4, subjectivity=0.8)",0.4,"free, freebook, FREEBOOKS",4
-1.22E+18,"RT @DebbiDelicious: #TrumpResignNow  #TRUMP WILL DIE IN PRISON 
-#TRUMP HAS 20+ #INVESTIGATIONS PENDING....
-#TRUMP IS STILL ..A  SUBJECT OF",WILL DIE IN PRISON HAS 20+ PENDING ... IS STILL ..A SUBJECT OF,"Sentiment(polarity=-0.16666666666666666, subjectivity=0.3333333333333333)",-0.166666667,"TrumpResignNow, TRUMP, TRUMP, INVESTIGATIONS, TRUMP",1
 1.22E+18,"Ž
 I had a #Great #Experience #Tday in #Shibuya (#Tky JP).
 .

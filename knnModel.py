@@ -16,6 +16,8 @@ from nltk.tokenize import TweetTokenizer
 import string
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 
 
 def preprocess_text(train):
@@ -30,25 +32,25 @@ def preprocess_text(train):
 
 
 def accuracyKnn(testresult, test):
-    #correct = (len(test)-1800)
+    # correct = (len(test)-1800)
     cnt = 0
     correct = len(test)
     Label = ['class_value']
     testLabel = test.as_matrix(Label)
     for i in range(len(testresult)):
         if testLabel[i][0] == testresult[i]:
-            cnt += 1.0
+            cnt += 1
     print("\nK-Neighbor Classifier Results:")
     print("--------------------------------------------")
     print("Total Docs Correctly Classified=", cnt)
     print("Total Number of Test Documents=", len(testresult))
     print
-    accuracy = (cnt/len(testresult))
+    accuracy = (cnt / len(testresult))
     # Classification_report(testLabel,testresult,0)
     return accuracy
 
-# Below function performs KNN classification on tarining data and returns the output of prediction performed on Test data
 
+# Below function performs KNN classification on tarining data and returns the output of prediction performed on Test data
 
 def knn(train, test):
     cols = ['clean_text', 'hashtags']
@@ -76,3 +78,9 @@ if __name__ == '__main__':
 
     accuracy = accuracyKnn(output, test)
     print("Accuracy with k-neighbor=", accuracy)
+
+    # RandomForestClassifier
+    rfc_clf = RandomForestClassifier()
+    rfc_clf.fit(train, test)
+    rfc_prediction = rfc_clf.predict(test)
+    print(rfc_prediction)
