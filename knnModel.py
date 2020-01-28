@@ -18,14 +18,13 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
+# from sklearn.model_selection import train_test_split
 
 
 def preprocess_text(train):
-    train_list = train['clean_text'].values.tolist()
-    train_list = train['hashtags'].values.tolist()
+    train_list1 = train['original_text'].values.tolist()
     lb = LabelEncoder()
-    train['clean_text'] = lb.fit_transform(train_list)
-    train['hashtags'] = lb.fit_transform(train_list)
+    train['original_text'] = lb.fit_transform(train_list1)
     return(train)
 
 # Below module Calculates the accuracy of prediction by K-nn algorithm
@@ -34,7 +33,7 @@ def preprocess_text(train):
 def accuracyKnn(testresult, test):
     # correct = (len(test)-1800)
     cnt = 0
-    correct = len(test)
+    # correct = len(test)
     Label = ['class_value']
     testLabel = test.as_matrix(Label)
     for i in range(len(testresult)):
@@ -43,7 +42,8 @@ def accuracyKnn(testresult, test):
     print("\nK-Neighbor Classifier Results:")
     print("--------------------------------------------")
     print("Total Docs Correctly Classified=", cnt)
-    print("Total Number of Test Documents=", len(testresult))
+    print("Total Number of Test Documents=", len(
+        testresult))
     print
     accuracy = (cnt / len(testresult))
     # Classification_report(testLabel,testresult,0)
@@ -53,12 +53,12 @@ def accuracyKnn(testresult, test):
 # Below function performs KNN classification on tarining data and returns the output of prediction performed on Test data
 
 def knn(train, test):
-    cols = ['clean_text', 'hashtags']
+    cols = ['original_text']
     Label = ['class_value']
     trainData = train.as_matrix(cols)  # x-train
     trainLabel = train.as_matrix(Label)  # y-train
     testData = test.as_matrix(cols)  # x-validation
-    knn = KNeighborsClassifier(n_neighbors=3, weights='distance')
+    knn = KNeighborsClassifier(n_neighbors=5, weights='distance')
     knn.fit(trainData, trainLabel.ravel())
     output = knn.predict(testData)
     return output
@@ -66,10 +66,10 @@ def knn(train, test):
 
 if __name__ == '__main__':
     # K-n Classifier
-    train = pd.read_csv('./data/crime_train.csv', engine='python',
-                        usecols=['clean_text', 'hashtags', 'class_value'])
+    train = pd.read_csv('./data/crime_data.csv', engine='python',
+                        usecols=['original_text', 'class_value'])
     test = pd.read_csv('./data/crime_test.csv', engine='python',
-                       usecols=['clean_text', 'hashtags', 'class_value'])
+                       usecols=['original_text', 'class_value'])
 
     train = preprocess_text(train)
     test = preprocess_text(test)
@@ -79,8 +79,5 @@ if __name__ == '__main__':
     accuracy = accuracyKnn(output, test)
     print("Accuracy with k-neighbor=", accuracy)
 
-    # RandomForestClassifier
-    rfc_clf = RandomForestClassifier()
-    rfc_clf.fit(train, test)
-    rfc_prediction = rfc_clf.predict(test)
-    print(rfc_prediction)
+    # df['class_value'] = df['hashtags'].apply(lambda x: 0 if x ==’Epistemology’ else 1)
+    # X_train, X_test, y_train, y_test = train_test_split(df['hashtags’], df['class_value'], random_state=1)
