@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, flash
-# from testPrediction import PredictData
 
 app = Flask(__name__)
 
@@ -17,10 +16,14 @@ def check():
     """
       Returns table data
     """
+    boundaries = request.form['boundaries']
+    if boundaries:
+        import Live_Tweets
+    # boundaries = ""
+    crime_data = Live_Tweets.crime_obj
 
-    # return render_template("/html/home.html", pred_Lists=pred_Lists, feature_Lists=feature_Lists, pos_score=pos_score,
-    #                        neg_score=neg_score, neut_score=neut_score)
-    return render_template("/html/home.html")
+    return render_template("/html/home.html", crime_data=crime_data)
+    # return render_template("/html/home.html")
 
 
 if __name__ == '__main__':

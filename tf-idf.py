@@ -28,7 +28,7 @@ import seaborn as sns
 # %matplotlib inline
 
 
-crime_data = pd.read_csv('data/crime_data_preprocessed.csv', engine='python')
+crime_data = pd.read_csv('data/crime_data.csv', engine='python')
 crime_data = crime_data.head(20000)
 
 
@@ -343,13 +343,13 @@ print("log reg  Accuracy Score ->",
       metrics.accuracy_score(Test_Y_balanced, y_pred))
 
 
-gb_clf = GradientBoostingClassifier(
-    n_estimators=20, learning_rate=1.0, max_features=100, max_depth=50, random_state=0)
-gb_clf.fit(Train_X_Tfidf, Train_Y_balanced)
+# gb_clf = GradientBoostingClassifier(
+#     n_estimators=20, learning_rate=1.0, max_features=100, max_depth=50, random_state=0)
+# gb_clf.fit(Train_X_Tfidf, Train_Y_balanced)
 
-y_pred = gb_clf.predict(Test_X_Tfidf)
-print(cm(Test_Y_balanced, y_pred))
-print('\n')
-print("Classification Report ")
-print(classification_report(Test_Y_balanced, y_pred))
-print("grad Accuracy Score ->", metrics.accuracy_score(Test_Y_balanced, y_pred))
+# y_pred = gb_clf.predict(Test_X_Tfidf)
+# print(cm(Test_Y_balanced, y_pred))
+# print('\n')
+# print("Classification Report ")
+# print(classification_report(Test_Y_balanced, y_pred))
+# print("grad Accuracy Score ->", metrics.accuracy_score(Test_Y_balanced, y_pred))

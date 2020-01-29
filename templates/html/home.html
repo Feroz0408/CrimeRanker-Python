@@ -348,7 +348,30 @@
               </a></g>
           </g>
         </svg>
+
         <div class="col-xs-4" style="margin-top: 4%">
+          {% if crime_data %}
+          <table id="tab1">
+            <thead>
+              <tr>
+                <th>Crime Category</th>
+                <th>Tweets Percentage</th>
+                <th>Rank</th>
+              </tr>
+            </thead>
+            {% for crime in crime_data %}
+            <tbody>
+              <tr>
+                <td>{{ crime }}</td>
+                <td>{{ crime }}</td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+          {% endif %}
+        </div>
+
+        <!-- <div>
           <table id="tab1">
             <thead>
               <th colspan="3" style="text-align: center;"> Top Crimes in New York</th>
@@ -386,7 +409,7 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
