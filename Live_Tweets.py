@@ -11,21 +11,17 @@ import pandas as pd
 import Stemming_Preprocessing
 import os
 from os import path
-import CrimeModels
-
-xmin = -92.888114
-ymin = 42.491983
-xmax = -86.805415
-ymax = 47.080621
-
+import config
+from operator import attrgetter
+import app
+from importlib import reload  # Python 3.4+ only.
 if path.exists("twitDB.json"):
     os.remove("twitDB.json")
-
 # authorization tokens
-consumer_key = 'rmd6kFz3ej0RlgNRMJM1abZ6C'
-consumer_secret = 'xWFHlAgDysUHIsqcZIR5p6T3b5xMlzs5FIQRnl3fhjFcEXI4PX'
-access_key = '962442942093852673-Fm8zMecozk0mfrbZ7FKgT4D1YYdVz5h'
-access_secret = 'ExmG8uAv1X0t0iBSrDbyymej5vFdUXoYRgg7K3ZRuSN9k'
+consumer_key = config.consumer_key
+consumer_secret = config.consumer_secret
+access_key = config.access_key
+access_secret = config.access_secret
 
 
 class listener(StreamListener):
@@ -33,7 +29,7 @@ class listener(StreamListener):
     def __init__(self):
         super().__init__()
         self.counter = 0
-        self.limit = 200
+        self.limit = 50
 
     def on_data(self, data):
         try:
@@ -45,7 +41,7 @@ class listener(StreamListener):
             if self.counter < self.limit:
                 return True
             else:
-                twitterStream.disconnect()
+                return False
 
         except BaseException as e:
             print('Failed', str(e))
@@ -55,80 +51,87 @@ class listener(StreamListener):
         print(status)
 
 
-auth = OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_key, access_secret)
-tags = ["molested", "rape", "statutoryrape", "sexualvoilence", "molest", "gangrape", "girlabuse", "assault", "childabuse", "abuse", "domesticabuse", "kidnapping", "burglary",
-        "larceny", "robbery", "autotheft", "shoplifting", "theft", "murder", "killed", "drugcrime", "trafficoffense", "financialcrime", "fraud", "drugtrafficking", "blackmail"]
+def startFetching(xmin, ymin, xmax, ymax):
+    import CrimeModels
+    reload(CrimeModels)
 
+    auth = OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_key, access_secret)
+    tags = ["molested", "rape", "statutoryrape", "sexualvoilence", "molest", "gangrape", "girlabuse", "assault", "childabuse", "abuse", "domesticabuse", "kidnapping", "burglary",
+            "larceny", "robbery", "autotheft", "shoplifting", "theft", "murder", "killed", "drugcrime", "trafficoffense", "financialcrime", "fraud", "drugtrafficking", "blackmail"]
 
-twitterStream = Stream(auth, listener())
-twitterStream.filter(track=tags)
-# Extracting live tweets based on location
-twitterStream.filter(locations=[xmin, ymin, xmax, ymax])
+    rape = 0
+    assault = 0
+    theft = 0
+    murder = 0
+    statuatory = 0
+    live_classes = []
+    crime_obj = []
+    sortedArray = []
 
-with open('twitDB.json', encoding='utf-8-sig') as f_input:
-    df = pd.read_json(f_input,  lines=True)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    print(xmin, ymin, xmax, ymax)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    twitterStream = Stream(auth, listener())
+    twitterStream.filter(track=tags)
+    # Extracting live tweets based on location
+    twitterStream.filter(locations=[xmin, ymin, xmax, ymax])
 
-df.to_csv('twitDB.csv', encoding='utf-8', index=False)
+    with open('twitDB.json', encoding='utf-8-sig') as f_input:
+        df = pd.read_json(f_input,  lines=True)
 
-live_crime_data = pd.read_csv('twitDB.csv', engine='python')
-live_crime_data['text'].dropna(inplace=True)
-live_crime_data['text'] = [entry.lower()
-                           for entry in live_crime_data['text']]
+    df.to_csv('twitDB.csv', encoding='utf-8', index=False)
 
+    live_crime_data = pd.read_csv('twitDB.csv', engine='python')
+    live_crime_data['text'].dropna(inplace=True)
+    live_crime_data['text'] = [entry.lower()
+                               for entry in live_crime_data['text']]
 
-# Pre processing and stemming live data
-live_crime_data['clean_text'] = live_crime_data['text'].str.lower()
-live_crime_data['clean_text'] = live_crime_data['text'].apply(
-    Stemming_Preprocessing.cleanHtml)
-live_crime_data['clean_text'] = live_crime_data['text'].apply(
-    Stemming_Preprocessing.cleanPunc)
-live_crime_data['clean_text'] = live_crime_data['text'].apply(
-    Stemming_Preprocessing.keepAlpha)
-live_crime_data.head()
+    # Pre processing and stemming live data
+    live_crime_data['clean_text'] = live_crime_data['text'].str.lower()
+    live_crime_data['clean_text'] = live_crime_data['text'].apply(
+        Stemming_Preprocessing.cleanHtml)
+    live_crime_data['clean_text'] = live_crime_data['text'].apply(
+        Stemming_Preprocessing.cleanPunc)
+    live_crime_data['clean_text'] = live_crime_data['text'].apply(
+        Stemming_Preprocessing.keepAlpha)
 
+    live_crime_data['clean_text'] = live_crime_data['clean_text'].apply(
+        Stemming_Preprocessing.stemming)
+    print(live_crime_data.head())
+    live_crime_data.to_csv(
+        "./data/live_data_preprocessed.csv", index=None, header=True)
+    live_classes = CrimeModels.live_data_classes
 
-live_crime_data['clean_text'] = live_crime_data['clean_text'].apply(
-    Stemming_Preprocessing.stemming)
-live_crime_data.head()
-print(live_crime_data.head())
+    for i in live_classes:
+        if(i == 0):
+            rape += 1
+        if(i == 1):
+            theft += 1
+        if(i == 2):
+            assault += 1
+        if(i == 3):
+            murder += 1
+        if(i == 4):
+            statuatory += 1
 
-export_csv = live_crime_data.to_csv("./data/live_data_preprocessed.csv",
-                                    index=None, header=True)
-
-
-live_classes = CrimeModels.live_data_classes
-rape = 0
-assault = 0
-theft = 0
-murder = 0
-statuatory = 0
-for i in live_classes:
-    if(i == 0):
-        rape += 1
-    if(i == 1):
-        theft += 1
-    if(i == 2):
-        assault += 1
-    if(i == 3):
-        murder += 1
-    if(i == 4):
-        statuatory += 1
-
-
-total = rape + assault + theft + murder + statuatory
-print(total)
-print("rape", rape, round(100 * float(rape)/float(total)))
-print("assault", assault, round(100 * float(assault)/float(total)))
-print("theft", theft, round(100 * float(theft)/float(total)))
-print("murder", murder, round(100 * float(murder)/float(total)))
-print("statuatory", statuatory, round(100 * float(statuatory)/float(total)))
-
-crime_obj = {
-    total: total,
-    rape: round(100 * float(rape)/float(total)),
-    assault: round(100 * float(assault)/float(total)),
-    theft: round(100 * float(theft)/float(total)),
-    murder: round(100 * float(murder)/float(total)),
-    statuatory: round(100 * float(statuatory)/float(total))
-}
+    total = rape + assault + theft + murder + statuatory
+    crime_obj.append({"name": "Rape & Sexual Crimes",
+                      "value": round(100 * float(rape)/float(total))})
+    crime_obj.append({"name": "Theft & Burglary",
+                      "value": round(100 * float(theft)/float(total))})
+    crime_obj.append({"name": "Assault & Badgering",
+                      "value": round(100 * float(assault)/float(total))})
+    crime_obj.append({"name": "Murder Crimes", "value": round(
+        100 * float(murder)/float(total))})
+    crime_obj.append({"name": "Statuatory Crimes", "value": round(
+        100 * float(statuatory)/float(total))})
+    sortedArray = sorted(crime_obj, key=lambda x: x["value"], reverse=True)
+    print(">>>>live tweets<<<<<<", sortedArray,
+          rape, assault, murder, theft, statuatory)
+    xmin = 0
+    ymin = 0
+    xmax = 0
+    ymax = 0
+    crime_obj = []
+    return sortedArray

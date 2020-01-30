@@ -65,7 +65,9 @@
   <!-- displays the body of html, included in other html file-->
   {% block body %}{% endblock %}
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script>
+    var boundaries = {}
     var coordinates = [
       {
         state: 'Alaska',
@@ -424,8 +426,28 @@
     function stateClick(state) {
       let currentState = state.currentTarget.getAttribute('title');
       let stateCoordinates = coordinates.filter(st => st.state === currentState);
-      alert(`State ${stateCoordinates[0].state}, xmin: ${stateCoordinates[0].xmin}, ymin: ${stateCoordinates[0].ymin}, xmax: ${stateCoordinates[0].xmax}, ymax: ${stateCoordinates[0].ymax} `);
+      let obj = { "state": stateCoordinates[0].state, xmin: stateCoordinates[0].xmin, ymin: stateCoordinates[0].ymin, xmax: stateCoordinates[0].xmax, ymax: stateCoordinates[0].ymax }
+      boundaries = obj;
+      $.ajax(
+        {
+          type: 'POST',
+          contentType: 'application/json',
+          dataType: 'json',
+          url: `http://localhost:5000?state=${boundaries.state}&xmin=${boundaries.xmin}&ymin=${boundaries.ymin}&xmax=${boundaries.xmax}&ymax=${boundaries.ymax}`,
+          success: function (data) {
+            var reply = data.reply;
+            if (reply == "success") {
+              return;
+            }
+            else {
+              alert("some error ocured in session agent")
+            }
+
+          }
+        }
+      );
     }
+
   </script>
 </body>
 

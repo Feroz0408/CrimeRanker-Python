@@ -17,7 +17,7 @@
         To Predict The Top Crimes
       </h4>
       <div class="main" style="display: flex; justify-content: center; border-top: 0;  height: 100%;">
-        <svg id="map" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="540">
+        <svg id="map" methods='POST' xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="540">
           <g>
             <g id="states"><a id="s01" title="Alabama" class="hint ">
                 <path
@@ -353,20 +353,22 @@
           {% if crime_data %}
           <table id="tab1">
             <thead>
+              <th colspan="3" style="text-align: center;"> Top Crimes in {{name}}</th>
               <tr>
                 <th>Crime Category</th>
                 <th>Tweets Percentage</th>
                 <th>Rank</th>
               </tr>
             </thead>
-            {% for crime in crime_data %}
             <tbody>
+              {% for crime in crime_data %}
               <tr>
-                <td>{{ crime }}</td>
-                <td>{{ crime }}</td>
+                <td>{{ crime.name }} </td>
+                <td>{{ crime.value }} %</td>
+                <td>{{loop.index}}</td>
               </tr>
+              {% endfor %}
             </tbody>
-            {% endfor %}
           </table>
           {% endif %}
         </div>
