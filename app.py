@@ -4,6 +4,7 @@ import re
 import sys
 from importlib import reload  # Python 3.4+ only.
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # boundaries = re.search('var boundaries')
 # if boundaries:
@@ -19,13 +20,14 @@ def index():
     return render_template("/html/home.html")
 
 
-@app.route('/Check_result', methods=['POST'])
+@app.route('/Check_result', methods=['GET', 'POST'])
 def check():
     """
       Returns table data
     """
     global selected
-
+    global sortedArray
+    global state
     state = request.args.get('state')
     xmin = float(request.args.get('xmin'))
     ymin = float(request.args.get('ymin'))
@@ -54,22 +56,10 @@ def check():
     return render_template("/html/home.html", crime_data=sortedArray, name=state)
 
 
-@app.route("/pass_val", methods=['POST'])
-def new():
-    import Live_Tweets
-    # import CrimeModels
-    # state = request.args.get('state')
-    # xmin = float(request.args.get('xmin'))
-    # ymin = float(request.args.get('ymin'))
-    # xmax = float(request.args.get('xmax'))
-    # ymax = float(request.args.get('ymax'))
-
-    # print(xmin, ">>>>>>>>>>>>> Hererere")
-    # print(">>>>>>>>>>>>>>>>>>>>")
-    # newArray = Live_Tweets.startFetching(xmin, ymin, xmax, ymax)
-    # print(">>>>>>.", state, xmin, ymin, xmax,
-    #       ymax, ">>>>>???????????/", newArray)
-
+@app.route("/pass_val", methods=['GET', 'POST'])
+def update():
+    if sortedArray:
+        return render_template("/html/home.html", crime_data=sortedArray, name=state)
     return render_template("/html/home.html")
 
 
