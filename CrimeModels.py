@@ -123,13 +123,13 @@ logreg = LogisticRegression(n_jobs=1, C=1e5)
 logreg.fit(Train_X_Tfidf, Train_Y)
 # y_pred = logreg.predict(Test_X_Tfidf)
 y_pred = logreg.predict(Test_X1_Tfidf)
-print("_____________++++++++++++++++####################")
+# print("_____________++++++++++++++++####################")
 
-print(y_pred)
+# print(y_pred)
 
 live_data_classes = y_pred
 
-print("_____________++++++++++++++++####################")
+# print("_____________++++++++++++++++####################")
 
 # print("Confusion Matrix")
 # print(cm(Test_Y, y_pred))

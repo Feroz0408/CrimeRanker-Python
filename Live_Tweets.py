@@ -69,9 +69,6 @@ def startFetching(xmin, ymin, xmax, ymax):
     crime_obj = []
     sortedArray = []
 
-    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
-    print(xmin, ymin, xmax, ymax)
-    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
     twitterStream = Stream(auth, listener())
     twitterStream.filter(track=tags)
     # Extracting live tweets based on location
@@ -98,7 +95,7 @@ def startFetching(xmin, ymin, xmax, ymax):
 
     live_crime_data['clean_text'] = live_crime_data['clean_text'].apply(
         Stemming_Preprocessing.stemming)
-    print(live_crime_data.head())
+    # print(live_crime_data.head())
     live_crime_data.to_csv(
         "./data/live_data_preprocessed.csv", index=None, header=True)
     live_classes = CrimeModels.live_data_classes
@@ -127,11 +124,4 @@ def startFetching(xmin, ymin, xmax, ymax):
     crime_obj.append({"name": "Statuatory Crimes", "value": round(
         100 * float(statuatory)/float(total))})
     sortedArray = sorted(crime_obj, key=lambda x: x["value"], reverse=True)
-    print(">>>>live tweets<<<<<<", sortedArray,
-          rape, assault, murder, theft, statuatory)
-    xmin = 0
-    ymin = 0
-    xmax = 0
-    ymax = 0
-    crime_obj = []
     return sortedArray

@@ -433,7 +433,7 @@
           type: 'POST',
           contentType: 'application/json',
           dataType: 'json',
-          url: `http://localhost:5000?state=${boundaries.state}&xmin=${boundaries.xmin}&ymin=${boundaries.ymin}&xmax=${boundaries.xmax}&ymax=${boundaries.ymax}`,
+          url: `http://localhost:5000/Check_result?state=${boundaries.state}&xmin=${boundaries.xmin}&ymin=${boundaries.ymin}&xmax=${boundaries.xmax}&ymax=${boundaries.ymax}`,
           success: function (data) {
             var reply = data.reply;
             if (reply == "success") {

@@ -9,31 +9,13 @@ app = Flask(__name__)
 # if boundaries:
 #     print(boundaries)
 
-
-@app.route('/', methods=['GET', 'POST'])
+sortedArray = ""
+name = ""
+@app.route('/')
 def index():
     """
      Loads the homepage 
     """
-    if request.args.get('state'):
-        state = request.args.get('state')
-        xmin = float(request.args.get('xmin'))
-        ymin = float(request.args.get('ymin'))
-        xmax = float(request.args.get('xmax'))
-        ymax = float(request.args.get('ymax'))
-        import Live_Tweets
-        import CrimeModels
-        import Stemming_Preprocessing
-        reload(Live_Tweets)
-        reload(CrimeModels)
-        reload(Stemming_Preprocessing)
-        sortedArray = Live_Tweets.startFetching(
-            xmin, ymin, xmax, ymax)
-        # os.remove("twitDB.json")
-        return render_template("/html/home.html", crime_data=sortedArray, name=state)
-
-    print(">>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<")
-    print("reererhfdfdvsv")
     return render_template("/html/home.html")
 
 
@@ -44,8 +26,32 @@ def check():
     """
     global selected
 
-    return render_template("/html/home.html", crime_data="")
-    # return render_template("/html/home.html")
+    state = request.args.get('state')
+    xmin = float(request.args.get('xmin'))
+    ymin = float(request.args.get('ymin'))
+    xmax = float(request.args.get('xmax'))
+    ymax = float(request.args.get('ymax'))
+    import Live_Tweets
+    import CrimeModels
+    import Stemming_Preprocessing
+    reload(Live_Tweets)
+    reload(CrimeModels)
+    reload(Stemming_Preprocessing)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    print("Boundaries For", state, xmin, ymin, xmax, ymax)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    sortedArray = Live_Tweets.startFetching(
+        xmin, ymin, xmax, ymax)
+    print("Crime Ranking:", "State:", state)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    print(sortedArray[0]["name"], sortedArray[0]["value"], "%")
+    print(sortedArray[1]["name"], sortedArray[1]["value"], "%")
+    print(sortedArray[2]["name"], sortedArray[2]["value"], "%")
+    print(sortedArray[3]["name"], sortedArray[3]["value"], "%")
+    print(sortedArray[4]["name"], sortedArray[4]["value"], "%")
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+
+    return render_template("/html/home.html", crime_data=sortedArray, name=state)
 
 
 @app.route("/pass_val", methods=['POST'])
@@ -69,3 +75,6 @@ def new():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.run(debug=True, host='127.0.0.1')

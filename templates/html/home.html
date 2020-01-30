@@ -17,7 +17,8 @@
         To Predict The Top Crimes
       </h4>
       <div class="main" style="display: flex; justify-content: center; border-top: 0;  height: 100%;">
-        <svg id="map" methods='POST' xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="540">
+        <svg id="map" action="/Check_result" method="POST" xmlns:xlink="http://www.w3.org/1999/xlink" width="900"
+          height="540">
           <g>
             <g id="states"><a id="s01" title="Alabama" class="hint ">
                 <path
@@ -372,58 +373,11 @@
           </table>
           {% endif %}
         </div>
-
-        <!-- <div>
-          <table id="tab1">
-            <thead>
-              <th colspan="3" style="text-align: center;"> Top Crimes in New York</th>
-              <tr>
-                <th>Crime Category</th>
-                <th>Tweets Percentage</th>
-                <th>Rank</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Rape & Sexual Crimes</td>
-                <td>38%</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>Theft & Burglary Crimes</td>
-                <td>22%</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>Assault & Badgering Crimes</td>
-                <td>18%</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>Murder Crimes</td>
-                <td>14%</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td>Statutory Crimes</td>
-                <td>8%</td>
-                <td>5</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> -->
       </div>
     </div>
   </div>
 </div>
 
-
 <!--google charts being used to make pie-charts-->
-{% if feature_Lists %}
-<script>
-  function home() {
-    location.replace("http://127.0.0.1:5000/")
-  }
-</script>
-{% endif %}
+
 {% endblock %}
