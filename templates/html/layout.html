@@ -428,15 +428,17 @@
     var element = Array.from(document.getElementsByTagName('a'));
     element.forEach(st => st.addEventListener("click", stateClick));
     function stateClick(state) {
+      document.getElementById("spinner").removeAttribute('hidden');
+      if (document.getElementById("tab1")) {
+        document.getElementById("tab1").setAttribute('hidden', true);
+      }
       let currentState = state.currentTarget.getAttribute('title');
       let stateCoordinates = coordinates.filter(st => st.state === currentState);
       let obj = { "state": stateCoordinates[0].state, xmin: stateCoordinates[0].xmin, ymin: stateCoordinates[0].ymin, xmax: stateCoordinates[0].xmax, ymax: stateCoordinates[0].ymax }
       boundaries = obj;
       $.ajax(`http://localhost:5000/Check_result?state=${boundaries.state}&xmin=${boundaries.xmin}&ymin=${boundaries.ymin}&xmax=${boundaries.xmax}&ymax=${boundaries.ymax}`).done(function (reply) {
-        $('#hero').html(reply);
+        $('#data-reload').html(reply);
       });
-
-      alert(`Fetching Top Crimes for ${stateCoordinates[0].state} State`)
     }
 
   </script>

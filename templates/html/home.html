@@ -5,7 +5,7 @@
 
 {% block body %}
 <!-- body of the html page that displays user interface -->
-<div class="" id="hero">
+<div class="" id="data-reload">
   <div class="row" style="">
     <h1
       style="text-align:center; font-size:40px; width: 100%; margin:0; padding: 1.5%; color:white; background-color: #051E34;">
@@ -349,7 +349,9 @@
           </g>
         </svg>
 
-        <div class="col-xs-4" style="margin-top: 4%">
+        <div class="col-xs-4" style="display: flex;justify-content: center;align-self: center; margin-bottom: 10%;">
+          <img id="spinner" hidden src="../../static/images/spinner.gif" alt="spinner" height="250px" width="250px"
+            style="margin: auto" />
           {% if crime_data %}
           <table id="tab1">
             <thead>
