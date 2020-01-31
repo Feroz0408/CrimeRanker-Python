@@ -1,11 +1,11 @@
-<!-- include content of layout.html -->
+<!-- # include content of layout.html -->
 {% extends '/html/layout.html' %}
 
 {% block title %}Crime Prediction {% endblock %}
 
 {% block body %}
 <!-- body of the html page that displays user interface -->
-<div class="">
+<div class="" id="hero">
   <div class="row" style="">
     <h1
       style="text-align:center; font-size:40px; width: 100%; margin:0; padding: 1.5%; color:white; background-color: #051E34;">
@@ -17,8 +17,7 @@
         To Predict The Top Crimes
       </h4>
       <div class="main" style="display: flex; justify-content: center; border-top: 0;  height: 100%;">
-        <svg id="map" action="/Check_result" method="POST" xmlns:xlink="http://www.w3.org/1999/xlink" width="900"
-          height="540">
+        <svg id="map" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="540">
           <g>
             <g id="states"><a id="s01" title="Alabama" class="hint ">
                 <path

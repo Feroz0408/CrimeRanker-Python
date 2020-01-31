@@ -3,7 +3,10 @@ from flask import Flask, render_template, request, redirect, flash
 import re
 import sys
 from importlib import reload  # Python 3.4+ only.
+from threading import Thread
 app = Flask(__name__)
+finished = False
+th = Thread()
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # boundaries = re.search('var boundaries')
@@ -12,11 +15,15 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 sortedArray = ""
 name = ""
+
+
 @app.route('/')
 def index():
     """
      Loads the homepage 
     """
+    if sortedArray:
+        return render_template("/html/home.html", crime_data=sortedArray, name=state)
     return render_template("/html/home.html")
 
 
@@ -39,11 +46,9 @@ def check():
     reload(Live_Tweets)
     reload(CrimeModels)
     reload(Stemming_Preprocessing)
-    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
-    print("Boundaries For", state, xmin, ymin, xmax, ymax)
-    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    sortedArray = {}
     sortedArray = Live_Tweets.startFetching(
-        xmin, ymin, xmax, ymax)
+        state, xmin, ymin, xmax, ymax)
     print("Crime Ranking:", "State:", state)
     print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
     print(sortedArray[0]["name"], sortedArray[0]["value"], "%")

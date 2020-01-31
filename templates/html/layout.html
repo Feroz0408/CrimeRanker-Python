@@ -4,6 +4,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <!-- <meta http-equiv="refresh" content="3" /> -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Crime Prediction</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -24,11 +25,13 @@
       padding: 8px;
     }
 
-    #states a path {
+    #states a path,
+    text {
       transition: fill .5s ease;
       -moz-transition: fill .5s ease;
       -webkit-transition: fill .5s ease;
       fill: #051E34 !important;
+      cursor: pointer;
     }
 
     #tab1 tr:nth-child(even) {
@@ -54,7 +57,7 @@
     }
 
     .hint {
-      fill: orangered !important;
+      fill: orange !important;
     }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -64,6 +67,7 @@
 <body style="background-color: #ffffff">
   <!-- displays the body of html, included in other html file-->
   {% block body %}{% endblock %}
+
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script>
@@ -428,27 +432,15 @@
       let stateCoordinates = coordinates.filter(st => st.state === currentState);
       let obj = { "state": stateCoordinates[0].state, xmin: stateCoordinates[0].xmin, ymin: stateCoordinates[0].ymin, xmax: stateCoordinates[0].xmax, ymax: stateCoordinates[0].ymax }
       boundaries = obj;
-      $.ajax(
-        {
-          type: 'POST',
-          contentType: 'application/json',
-          dataType: 'json',
-          url: `http://localhost:5000/Check_result?state=${boundaries.state}&xmin=${boundaries.xmin}&ymin=${boundaries.ymin}&xmax=${boundaries.xmax}&ymax=${boundaries.ymax}`,
-          success: function (data) {
-            var reply = data.reply;
-            if (reply == "success") {
-              return;
-            }
-            else {
-              alert("some error ocured in session agent")
-            }
+      $.ajax(`http://localhost:5000/Check_result?state=${boundaries.state}&xmin=${boundaries.xmin}&ymin=${boundaries.ymin}&xmax=${boundaries.xmax}&ymax=${boundaries.ymax}`).done(function (reply) {
+        $('#hero').html(reply);
+      });
 
-          }
-        }
-      );
+      alert(`Fetching Top Crimes for ${stateCoordinates[0].state} State`)
     }
 
   </script>
+
 </body>
 
 </html>

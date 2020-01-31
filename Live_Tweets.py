@@ -29,7 +29,7 @@ class listener(StreamListener):
     def __init__(self):
         super().__init__()
         self.counter = 0
-        self.limit = 50
+        self.limit = 20
 
     def on_data(self, data):
         try:
@@ -51,9 +51,13 @@ class listener(StreamListener):
         print(status)
 
 
-def startFetching(xmin, ymin, xmax, ymax):
+def startFetching(state, xmin, ymin, xmax, ymax):
     import CrimeModels
     reload(CrimeModels)
+
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    print("Boundaries For", state, xmin, ymin, xmax, ymax)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
 
     auth = OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_key, access_secret)
@@ -113,15 +117,16 @@ def startFetching(xmin, ymin, xmax, ymax):
             statuatory += 1
 
     total = rape + assault + theft + murder + statuatory
+
     crime_obj.append({"name": "Rape & Sexual Crimes",
-                      "value": round(100 * float(rape)/float(total))})
+                      "value": round(100 * float(rape)/float(total), 2)})
     crime_obj.append({"name": "Theft & Burglary",
-                      "value": round(100 * float(theft)/float(total))})
+                      "value": round(100 * float(theft)/float(total), 2)})
     crime_obj.append({"name": "Assault & Badgering",
-                      "value": round(100 * float(assault)/float(total))})
+                      "value": round(100 * float(assault)/float(total), 2)})
     crime_obj.append({"name": "Murder Crimes", "value": round(
-        100 * float(murder)/float(total))})
+        100 * float(murder)/float(total), 2)})
     crime_obj.append({"name": "Statuatory Crimes", "value": round(
-        100 * float(statuatory)/float(total))})
+        100 * float(statuatory)/float(total), 2)})
     sortedArray = sorted(crime_obj, key=lambda x: x["value"], reverse=True)
     return sortedArray
