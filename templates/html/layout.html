@@ -10,17 +10,45 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
   <style>
-    #tab1,
-    #tab2 {
+    .svg-container {
+      display: flex;
+      justify-content: center;
+      border-top: 0;
+      height: 100%;
+      transition: ease-out;
+      transition: .6s;
+    }
+
+
+    @media only screen and (max-width: 900px) {
+      .svg-container {
+        display: block;
+        justify-content: center;
+        border-top: 0;
+        height: 100%;
+      }
+
+      table {
+        width: 90% !important;
+      }
+
+      .table-header {
+        font-size: 24px;
+      }
+
+      th {
+        font-size: 18px;
+      }
+
+    }
+
+    #table {
       font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
       border-collapse: collapse;
       width: 100%;
     }
 
-    #tab1 td,
-    #tab1 th,
-    #tab2 td,
-    #tab2 th {
+    #table td {
       border: 1px solid #ddd;
       padding: 8px;
     }
@@ -34,26 +62,31 @@
       cursor: pointer;
     }
 
-    #tab1 tr:nth-child(even) {
+    #states path:hover {
+      fill: firebrick !important
+    }
+
+    #states text:hover {
+      color: white !important
+    }
+
+
+    #table tr:nth-child(even) {
       background-color: #f2f2f2;
     }
 
 
-    #tab2 tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
 
-    #tab2 tr:hover {
-      background-color: #ddd;
-    }
-
-    #tab1 th,
-    #tab2 th {
+    #table th {
       padding-top: 12px;
       padding-bottom: 12px;
       text-align: left;
       background-color: #051E34;
       color: white;
+      font-size: 14px;
+      border-right: 1px solid white;
+      padding-left: 10px;
+
     }
 
     .hint {
@@ -424,13 +457,15 @@
         ymax: 45.005904
       }
     ];
-
+    document.body.style.pointerEvents = "all";
     var element = Array.from(document.getElementsByTagName('a'));
     element.forEach(st => st.addEventListener("click", stateClick));
+
     function stateClick(state) {
       document.getElementById("spinner").removeAttribute('hidden');
-      if (document.getElementById("tab1")) {
-        document.getElementById("tab1").setAttribute('hidden', true);
+      document.body.style.pointerEvents = "none";
+      if (document.getElementById("table")) {
+        document.getElementById("table").setAttribute('hidden', true);
       }
       let currentState = state.currentTarget.getAttribute('title');
       let stateCoordinates = coordinates.filter(st => st.state === currentState);

@@ -48,6 +48,14 @@ def balance_classes(xs, ys):
     return new_xs, new_ys
 
 
+balanced_x, balanced_y = balance_classes(
+    crime_data['original_text'], crime_data['class_value'])
+
+# print("Class Balancing")
+# print("======================")
+# print(Counter(balanced_y))
+# print("======================")
+
 np.random.seed(500)
 Train_X, Test_X, Train_Y, Test_Y = model_selection.train_test_split(
     crime_data['original_text'], crime_data['class_value'], test_size=0.3)
@@ -56,14 +64,14 @@ Train_X1, Test_X1, Train_Y1, Test_Y1 = model_selection.train_test_split(
     live_crime_data['text'], live_crime_data['text'], test_size=0.8)
 
 
-Encoder = LabelEncoder()
-Train_Y = Encoder.fit_transform(Train_Y)
-Test_Y = Encoder.fit_transform(Test_Y)
+Label_Encoder = LabelEncoder()
+Train_Y = Label_Encoder.fit_transform(Train_Y)
+Test_Y = Label_Encoder.fit_transform(Test_Y)
 
 
-Encoder = LabelEncoder()
-Train_Y1 = Encoder.fit_transform(Train_Y1)
-Test_Y1 = Encoder.fit_transform(Test_Y1)
+Label_Encoder = LabelEncoder()
+Train_Y1 = Label_Encoder.fit_transform(Train_Y1)
+Test_Y1 = Label_Encoder.fit_transform(Test_Y1)
 
 # Tfidf_vect = TfidfVectorizer(max_df=100.0, min_df=200)
 # Tfidf_vect.fit(live_crime_data['text'].astype('U').values)

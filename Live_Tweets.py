@@ -29,7 +29,7 @@ class listener(StreamListener):
     def __init__(self):
         super().__init__()
         self.counter = 0
-        self.limit = 20
+        self.limit = 30
 
     def on_data(self, data):
         try:
@@ -52,8 +52,8 @@ class listener(StreamListener):
 
 
 def startFetching(state, xmin, ymin, xmax, ymax):
-    import CrimeModels
-    reload(CrimeModels)
+    import FinalModel
+    reload(FinalModel)
 
     print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
     print("Boundaries For", state, xmin, ymin, xmax, ymax)
@@ -102,7 +102,7 @@ def startFetching(state, xmin, ymin, xmax, ymax):
     # print(live_crime_data.head())
     live_crime_data.to_csv(
         "./data/live_data_preprocessed.csv", index=None, header=True)
-    live_classes = CrimeModels.live_data_classes
+    live_classes = FinalModel.live_data_classes
 
     for i in live_classes:
         if(i == 0):

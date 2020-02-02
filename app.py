@@ -41,10 +41,10 @@ def check():
     xmax = float(request.args.get('xmax'))
     ymax = float(request.args.get('ymax'))
     import Live_Tweets
-    import CrimeModels
+    import FinalModel
     import Stemming_Preprocessing
     reload(Live_Tweets)
-    reload(CrimeModels)
+    reload(FinalModel)
     reload(Stemming_Preprocessing)
     sortedArray = {}
     sortedArray = Live_Tweets.startFetching(
@@ -61,11 +61,11 @@ def check():
     return render_template("/html/home.html", crime_data=sortedArray, name=state)
 
 
-@app.route("/pass_val", methods=['GET', 'POST'])
-def update():
-    if sortedArray:
-        return render_template("/html/home.html", crime_data=sortedArray, name=state)
-    return render_template("/html/home.html")
+# @app.route("/pass_val", methods=['GET', 'POST'])
+# def update():
+#     if sortedArray:
+#         return render_template("/html/home.html", crime_data=sortedArray, name=state)
+#     return render_template("/html/home.html")
 
 
 if __name__ == '__main__':
