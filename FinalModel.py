@@ -81,16 +81,17 @@ Logistic_Reg_Model = LogisticRegression(n_jobs=1, C=1e5)
 Logistic_Reg_Model.fit(Train_X_count_vec, Train_Y)
 
 # Predicting class labels for live tweets fetched from twitter
+Class_Predictions_Train = Logistic_Reg_Model.predict(Test_X_count_vec)
 Class_Predictions = Logistic_Reg_Model.predict(Test_X1_count_vec)
 live_data_classes = Class_Predictions
 # print(Class_Predictions)
 # print("Confusion Matrix")
-# print(cm(Test_Y, Class_Predictions))
+# print(cm(Test_Y, Class_Predictions_Train))
 # print('\n')
 # print("Classification Report ")
-# print(classification_report(Test_Y1, Class_Predictions))
-# print("Logistic Regression Accuracy Score Count Vect ->",
-#       metrics.accuracy_score(Test_Y1, Class_Predictions))
+# print(classification_report(Test_Y, Class_Predictions_Train))
+# print("Logistic Regression Accuracy Score Count Vectorization ->",
+#       metrics.accuracy_score(Test_Y, Class_Predictions_Train))
 
 
 # Logistic_Reg_Model = LogisticRegression(n_jobs=1, C=1e5)

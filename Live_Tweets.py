@@ -29,7 +29,7 @@ class listener(StreamListener):
     def __init__(self):
         super().__init__()
         self.counter = 0
-        self.limit = 30
+        self.limit = 50
 
     def on_data(self, data):
         try:
@@ -55,10 +55,11 @@ def startFetching(state, xmin, ymin, xmax, ymax):
     import FinalModel
     reload(FinalModel)
 
-    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
-    print("Boundaries For", state, xmin, ymin, xmax, ymax)
-    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    # print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    # print("Boundaries For", state, xmin, ymin, xmax, ymax)
+    # print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
 
+    print("Extracting live tweets.............")
     auth = OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_key, access_secret)
     tags = ["molested", "rape", "statutoryrape", "sexualvoilence", "molest", "gangrape", "girlabuse", "assault", "childabuse", "abuse", "domesticabuse", "kidnapping", "burglary",
@@ -88,20 +89,22 @@ def startFetching(state, xmin, ymin, xmax, ymax):
     live_crime_data['text'] = [entry.lower()
                                for entry in live_crime_data['text']]
 
-    # Pre processing and stemming live data
+    print("Started Preprocessing.............")
+    # Preprocessing and stemming live data
     live_crime_data['clean_text'] = live_crime_data['text'].str.lower()
     live_crime_data['clean_text'] = live_crime_data['text'].apply(
-        Stemming_Preprocessing.cleanHtml)
+        Stemming_Preprocessing.cleanHTML_Code)
     live_crime_data['clean_text'] = live_crime_data['text'].apply(
-        Stemming_Preprocessing.cleanPunc)
+        Stemming_Preprocessing.removePunctuations)
     live_crime_data['clean_text'] = live_crime_data['text'].apply(
-        Stemming_Preprocessing.keepAlpha)
+        Stemming_Preprocessing.keep_Alpha)
 
     live_crime_data['clean_text'] = live_crime_data['clean_text'].apply(
         Stemming_Preprocessing.stemming)
     # print(live_crime_data.head())
     live_crime_data.to_csv(
         "./data/live_data_preprocessed.csv", index=None, header=True)
+    print("Predicting Class Labels.............")
     live_classes = FinalModel.live_data_classes
 
     for i in live_classes:
@@ -129,4 +132,5 @@ def startFetching(state, xmin, ymin, xmax, ymax):
     crime_obj.append({"name": "Statuatory Crimes", "value": round(
         100 * float(statuatory)/float(total), 2)})
     sortedArray = sorted(crime_obj, key=lambda x: x["value"], reverse=True)
+
     return sortedArray

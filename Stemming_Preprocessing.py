@@ -16,8 +16,11 @@ from nltk.corpus import wordnet as wn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import model_selection, naive_bayes, svm
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix as cm, classification_report
+import sklearn.metrics as metrics
+from sklearn.linear_model import LogisticRegression
 
-crime_data = pd.read_csv('data/crime_data_preprocessed.csv', engine='python')
+crime_data = pd.read_csv('data/crime_data.csv', engine='python')
 
 np.random.seed(500)
 crime_data['original_text'].dropna(inplace=True)
@@ -29,13 +32,14 @@ if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
 
-def cleanHtml(sentence):
-    cleanr = re.compile('<.*?>')
-    cleantext = re.sub(cleanr, ' ', str(sentence))
-    return cleantext
+def cleanHTML_Code(tweet):
+    clean_reg = re.compile('<.*?>')
+    processed_text = re.sub(clean_reg, ' ', str(tweet))
+    return processed_text
 
 
-def cleanPunc(sentence):  # function to clean the word of any punctuation or special characters
+# function to clean the word of any punctuation or special characters
+def removePunctuations(sentence):
     cleaned = re.sub(r'[?|!|\'|"|#]', r'', sentence)
     cleaned = re.sub(r'[.|,|)|(|\|/]', r' ', cleaned)
     cleaned = cleaned.strip()
@@ -43,49 +47,49 @@ def cleanPunc(sentence):  # function to clean the word of any punctuation or spe
     return cleaned
 
 
-def keepAlpha(sentence):
-    alpha_sent = ""
+def keep_Alpha(sentence):
+    alpha = ""
     for word in sentence.split():
         alpha_word = re.sub('[^a-z A-Z]+', ' ', word)
-        alpha_sent += alpha_word
-        alpha_sent += " "
-    alpha_sent = alpha_sent.strip()
-    return alpha_sent
+        alpha += alpha_word
+        alpha += " "
+    alpha = alpha.strip()
+    return alpha
 
 
 crime_data['clean_text'] = crime_data['original_text'].str.lower()
-crime_data['clean_text'] = crime_data['clean_text'].apply(cleanHtml)
-crime_data['clean_text'] = crime_data['clean_text'].apply(cleanPunc)
-crime_data['clean_text'] = crime_data['clean_text'].apply(keepAlpha)
-crime_data.head()
+crime_data['clean_text'] = crime_data['clean_text'].apply(cleanHTML_Code)
+crime_data['clean_text'] = crime_data['clean_text'].apply(removePunctuations)
+crime_data['clean_text'] = crime_data['clean_text'].apply(keep_Alpha)
+# crime_data.head()
 
 stop_words = set(stopwords.words('english'))
 
-re_stop_words = re.compile(r"\b(" + "|".join(stop_words) + ")\\W", re.I)
+stopWords_reg = re.compile(r"\b(" + "|".join(stop_words) + ")\\W", re.I)
 
 
-def removeStopWords(sentence):
-    global re_stop_words
-    return re_stop_words.sub(" ", sentence)
+def removeStopWords(tweet):
+    global stopWords_reg
+    return stopWords_reg.sub(" ", tweet)
 
 
 crime_data['clean_text'] = crime_data['original_text'].apply(removeStopWords)
-crime_data.head()
+# crime_data.head()
 
 stemmer = SnowballStemmer("english")
 
 
-def stemming(sentence):
+def stemming(tweet):
     stemSentence = ""
-    for word in sentence.split():
-        stem = stemmer.stem(word)
-        stemSentence += stem
+    for word in tweet.split():
+        stemmed_word = stemmer.stem(word)
+        stemSentence += stemmed_word
         stemSentence += " "
     stemSentence = stemSentence.strip()
     return stemSentence
 
 
-# crime_data['clean_text'] = crime_data['clean_text'].apply(stemming)
+crime_data['clean_text'] = crime_data['clean_text'].apply(stemming)
 # crime_data.head()
 # print(crime_data.head())
 
@@ -107,7 +111,7 @@ def stemming(sentence):
 
 # print(Train_X_Tfidf)
 
-# # print(Tfidf_vect.vocabulary_)
+# print(Tfidf_vect.vocabulary_)
 
 
 # # fit the training dataset on the NB classifier

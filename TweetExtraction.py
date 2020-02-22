@@ -9,15 +9,6 @@ import preprocessor as p
 from nltk.tokenize import word_tokenize
 import ssl
 
-# try:
-#     _create_unverified_https_context = ssl._create_unverified_context
-# except AttributeError:
-#     pass
-# else:
-#     ssl._create_default_https_context = _create_unverified_https_context
-
-# nltk.download()
-
 
 # Twitter credentials for the app
 consumer_key = 'rmd6kFz3ej0RlgNRMJM1abZ6C'
@@ -31,11 +22,11 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 # file location changed to "data/telemedicine_data_extraction/" for clearer path
-rape_tweets = "data/rape_data1.csv"
-assault_tweets = "data/assault_data2.csv"
-theft_tweets = "data/theft_data2.csv"
-murder_tweets = "data/murder_data1.csv"
-statutory_tweets = "data/statutory_data1.csv"
+rape_tweets = "data/rape_data.csv"
+assault_tweets = "data/assault_data.csv"
+theft_tweets = "data/theft_data.csv"
+murder_tweets = "data/murder_data.csv"
+statutory_tweets = "data/statutory_data.csv"
 
 # columns of the csv file
 COLS = ['id', 'created_at', 'source', 'original_text', 'clean_text', 'sentiment', 'polarity', 'subjectivity', 'lang',
@@ -172,12 +163,11 @@ def write_tweets(keyword, file):
             new_entry = []
             status = status._json
 
-            # check whether the tweet is in english or skip to the next tweet
+            # check if the tweets are in english if not skip the tweet
             if status['lang'] != 'en':
                 continue
 
-            # when run the code, below code replaces the retweet amount and
-            # no of favorires that are changed since last download.
+            # replace favorite and retweet count
             if status['created_at'] in df['created_at'].values:
                 i = df.loc[df['created_at'] == status['created_at']].index[0]
                 if status['favorite_count'] != df.at[i, 'favorite_count'] or \
@@ -200,12 +190,12 @@ def write_tweets(keyword, file):
             polarity = Sentiment.polarity
             subjectivity = Sentiment.subjectivity
 
-            # new entry append
+            # adding new entry
             new_entry += [status['id'], status['created_at'],
                           status['source'], status['text'], filtered_tweet, Sentiment, polarity, subjectivity, status['lang'],
                           status['favorite_count'], status['retweet_count']]
 
-            # to append original author of the tweet
+            # adding author
             new_entry.append(status['user']['screen_name'])
 
             try:
@@ -214,7 +204,7 @@ def write_tweets(keyword, file):
                 is_sensitive = None
             new_entry.append(is_sensitive)
 
-            # hashtagas and mentiones are saved using comma separted
+            # adding hashtags with comma seperation
             hashtags = ", ".join([hashtag_item['text']
                                   for hashtag_item in status['entities']['hashtags']])
             new_entry.append(hashtags)
@@ -222,7 +212,7 @@ def write_tweets(keyword, file):
                                   for mention in status['entities']['user_mentions']])
             new_entry.append(mentions)
 
-            # get location of the tweet if possible
+            # getting location of the tweets if they exist
             try:
                 location = status['user']['location']
             except TypeError:
@@ -242,17 +232,27 @@ def write_tweets(keyword, file):
     df.to_csv(csvFile, mode='a', columns=COLS, index=False, encoding="utf-8")
 
 
-# keywords used for extracting the tweets
-Rape_keywords = '#molested OR #rape OR #statutoryrape OR #sexualvoilence OR #molest OR #gangrape OR #girlabuse'
-Assault_keywords = '#assault OR #childabuse OR #abuse OR #domesticabuse OR #kidnapping'
+# keywords used for extracting the crime related tweets
+# Rape_keywords = '#molested OR #rape OR #statutoryrape OR #sexualvoilence OR #molest OR #gangrape OR #girlabuse'
+# Assault_keywords = '#assault OR #childabuse OR #abuse OR #domesticabuse OR #kidnapping'
 # Theft_keywords = '#burglary OR #larceny OR #robbery OR #autotheft OR #shoplifting OR #theft'
-# Murder_keywords = '#murdered OR #murder OR #killed'
-# Statutory_keywords = '#drugcrime OR #trafficoffense OR #financialcrime OR #fraud OR #blackmail OR #drugtrafficking'
+Murder_keywords = '#murdered OR #murder OR #killed'
+Statutory_keywords = '#drugcrime OR #trafficoffense OR #financialcrime OR #fraud OR #blackmail OR #drugtrafficking'
 
 
-# call main method passing keywords and file pat
-write_tweets(Rape_keywords, rape_tweets)
-write_tweets(Assault_keywords,  assault_tweets)
+# call main method passing keywords and file path
+# write_tweets(Rape_keywords, rape_tweets)
+# write_tweets(Assault_keywords,  assault_tweets)
 # write_tweets(Theft_keywords, theft_tweets)
-# write_tweets(Murder_keywords, murder_tweets)
-# write_tweets(Statutory_keywords,  statutory_tweets)
+write_tweets(Murder_keywords, murder_tweets)
+write_tweets(Statutory_keywords,  statutory_tweets)
+
+
+# try:
+#     _create_unverified_https_context = ssl._create_unverified_context
+# except AttributeError:
+#     pass
+# else:
+#     ssl._create_default_https_context = _create_unverified_https_context
+
+# nltk.download()

@@ -20,7 +20,7 @@ name = ""
 @app.route('/')
 def index():
     """
-     Loads the homepage 
+     intialize landing page
     """
     if sortedArray:
         return render_template("/html/home.html", crime_data=sortedArray, name=state)
@@ -30,7 +30,7 @@ def index():
 @app.route('/Check_result', methods=['GET', 'POST'])
 def check():
     """
-      Returns table data
+      Display Crime Prediction
     """
     global selected
     global sortedArray
@@ -47,8 +47,14 @@ def check():
     reload(FinalModel)
     reload(Stemming_Preprocessing)
     sortedArray = {}
+
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+    print("Boundaries For", state, xmin, ymin, xmax, ymax)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
+
     sortedArray = Live_Tweets.startFetching(
         state, xmin, ymin, xmax, ymax)
+    print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
     print("Crime Ranking:", "State:", state)
     print(">>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<")
     print(sortedArray[0]["name"], sortedArray[0]["value"], "%")
